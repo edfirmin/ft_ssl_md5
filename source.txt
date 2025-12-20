@@ -1,0 +1,18 @@
+Global:
+https://en.wikipedia.org/wiki/Bitwise_operations_in_C
+https://zestedesavoir.com/tutoriels/755/le-langage-c-1/notions-avancees/manipulation-des-bits/
+
+MD5 Source:
+https://fr.wikipedia.org/wiki/MD5
+https://youtu.be/WOdDBAvD9VY?si=qyF70PjVmnfYs_qs
+https://youtu.be/5MiMK45gkTY?si=oi6pxBpKfssWYbyD
+https://youtu.be/noy-SZxask4?si=hjw_lsNBl0Lg5NTS
+https://www.frameip.com/decrypter-dechiffrer-cracker-hash-md5/
+https://stackoverflow.com/questions/32933254/which-type-of-leftrotation-is-used-by-the-md5-hash-algorithm
+
+SHA256 Source:
+https://fr.wikipedia.org/wiki/SHA-2
+https://youtu.be/orIgy2MjqrA?si=VLTM0AC7-IDNq65R
+https://www.ssldragon.com/fr/blog/algorithme-sha-256/
+https://www.youtube.com/watch?v=5MiMK45gkTY&t=540s
+
