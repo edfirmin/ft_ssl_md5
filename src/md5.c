@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   md5.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edilson <edilson@student.42.fr>            +#+  +:+       +#+        */
+/*   By: edfirmin <edfirmin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 12:27:20 by edfirmin          #+#    #+#             */
-/*   Updated: 2025/11/26 10:34:37 by edilson          ###   ########.fr       */
+/*   Updated: 2025/12/24 07:46:19 by edfirmin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,23 @@ static const __uint32_t r[64] = {
 
 __uint32_t fonc_K(int i){
     double v = fabs(sin(i + 1));
-    return (4294967296 * v);// 4294967296 == 2^32
+    return (4294967296 * v);
 }
-
-// __uint32_t leftrotate (x, c){
-//     return (x << c) | (x >> (32-c));
-// }
 
 #define leftrotate(x, c) (((x) << (c)) | ((x) >> (32-(c))))
 
 void md5(const __uint8_t *msg, int len, __uint8_t outp[16]) {
-    __uint32_t a0 = 0x67452301;// valeur arbitaire du RFC
-    __uint32_t b0 = 0xefcdab89;// pareil
-    __uint32_t c0 = 0x98badcfe;// pareil
-    __uint32_t d0 = 0x10325476;// pareil
+    __uint32_t a0 = 0x67452301;
+    __uint32_t b0 = 0xefcdab89;
+    __uint32_t c0 = 0x98badcfe;
+    __uint32_t d0 = 0x10325476;
 
-    int new_len = len + 1;//pareil
-    while (new_len % 64 != 56) new_len++;// pour setup les remplissage de "0" 
-    __uint8_t *msg_pad = calloc(new_len + 8, 1);// pareil
+    int new_len = len + 1;
+    while (new_len % 64 != 56) new_len++;
+    __uint8_t *msg_pad = calloc(new_len + 8, 1);
 
     memcpy(msg_pad, msg, len);
-    msg_pad[len] = 0x80;  // pour mettre un "1" devant
+    msg_pad[len] = 0x80;
 
     __uint64_t bits_len = (__uint64_t)len * 8;
     memcpy(msg_pad + new_len, &bits_len, 8);

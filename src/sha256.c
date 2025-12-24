@@ -6,7 +6,7 @@
 /*   By: edfirmin <edfirmin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 12:27:05 by edfirmin          #+#    #+#             */
-/*   Updated: 2025/12/20 13:32:59 by edfirmin         ###   ########.fr       */
+/*   Updated: 2025/12/24 07:47:00 by edfirmin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,6 @@ static const __uint32_t K[64] = {
     0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
     0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
 };
-
-
-
-// void    sha256(const __uint8_t *msg, int len, __uint8_t outp[32]){
-//     __uint32_t H[8] ={0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19};
-
-//     printf("la\n");
-//     return;
-// }
 
 void hashin(__uint32_t H[8], const __uint8_t msg[64])
 {
@@ -101,30 +92,29 @@ void sha256(const __uint8_t *msg, int len, __uint8_t outp[32])
     __uint8_t block[64];
     size_t offset = 0;
 
-    while (len - offset >= 64) { // par block de 512 bits (64*8)
-        hashin(H, msg + offset);//
-        offset += 64;//
+    while (len - offset >= 64) {
+        hashin(H, msg + offset);
+        offset += 64;
     }
 
-    size_t r = len - offset;// apres la boucle, prends le reste et le met dans 'block' pour le padding et mettre la taille du message
-    memcpy(block, msg + offset, r);//
+    size_t r = len - offset;
+    memcpy(block, msg + offset, r);
 
-    block[r++] = 0x80;//mettre un 1 en big-endien a la fin fu messgage
+    block[r++] = 0x80;
 
-    if (r > 56) {// si ya pas la place pour la taille du mesage, remplir de 0 pour cree un autre block
-        while (r < 64) block[r++] = 0;//
-        hashin(H, block);//
-        r = 0;//
-    }//
-    while (r < 56) block[r++] = 0;//
+    if (r > 56) {
+        while (r < 64) block[r++] = 0;
+        hashin(H, block);
+        r = 0;
+    }
+    while (r < 56) block[r++] = 0;
 
-    __uint64_t bits = len * 8;//mettre la taille du message en big endien a la fin
-    for (int i = 0; i < 8; i++)//
-        block[63 - i] = (bits >> (8 * i)) & 0xff;//
-    hashin(H, block);//hash le dernier block
+    __uint64_t bits = len * 8;
+    for (int i = 0; i < 8; i++)
+        block[63 - i] = (bits >> (8 * i)) & 0xff;
+    hashin(H, block);
 
-    // memcpy(out, H, 32)
-    for (int i = 0; i < 8; i++) {//stock le hashage en big endien dans out
+    for (int i = 0; i < 8; i++) {
         outp[4 * i + 0] = (H[i] >> 24) & 0xff;
         outp[4 * i + 1] = (H[i] >> 16) & 0xff;
         outp[4 * i + 2] = (H[i] >>  8) & 0xff;

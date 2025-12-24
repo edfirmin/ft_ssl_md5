@@ -6,7 +6,7 @@
 /*   By: edfirmin <edfirmin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:46:59 by edfirmin          #+#    #+#             */
-/*   Updated: 2025/12/20 14:30:21 by edfirmin         ###   ########.fr       */
+/*   Updated: 2025/12/24 08:36:03 by edfirmin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,16 @@ extern t_flag flg;
 
 //----------UTILS----------//
 void    mess_error(int k, char *c);
-// int     ft_strlen(char *str);
-// char	*ft_strjoin(char *s1, char *s2);
-// char	*ft_strdup(char *s1);
+char	**ft_split(char const *s, char c);
 int     check_com(char *str);
 void 	check_opt(char **input);
-int make_opt(char **av, int w_fonc, int *i);
-void maj_s(int **i, char **av, int w_fonc);
-void maj_r(int **i, char **av, int w_fonc);
-void maj_q(int **i, char **av, int w_fonc);
-void maj_p(int **i, char **av, int w_fonc);
-// void	*tab_free(char **tab);
-// void	*ft_calloc(size_t count, size_t size);
-// void	ft_bzero(void *s, size_t n);
+int     make_opt(char **av, int w_fonc, int *i);
+void    maj_s(int **i, char **av, int w_fonc);
+void    maj_r(int **i, char **av, int w_fonc);
+void    maj_q(int **i, char **av, int w_fonc);
+void    maj_p(int **i, char **av, int w_fonc);
+void	*tab_free(char **tab);
+char    **take_in(void);
 
 void    md5(const __uint8_t *msg, int len, __uint8_t outp[16]);
 void 	main_md5(char *src, int is_str);

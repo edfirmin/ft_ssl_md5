@@ -6,19 +6,32 @@
 /*   By: edfirmin <edfirmin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 12:26:54 by edfirmin          #+#    #+#             */
-/*   Updated: 2025/12/20 14:43:42 by edfirmin         ###   ########.fr       */
+/*   Updated: 2025/12/24 08:35:53 by edfirmin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
 
-// int file_open;
-// t_flag flg = {0, 0, 0, 0};
+void	*tab_free(char **tab){
+	int	i;
 
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+	return (NULL);
+} 
 
 void maj_p(int **i, char ** av, int w_fonc){
+    void (*fonc[])() = {
+        handle_stdin_md5,
+        handle_stdin_sha256
+    };
     flg.p = 1;
-    handle_stdin_sha256();
+    fonc[w_fonc]();
 }
 
 void maj_q(int **i, char **av, int w_fonc){
@@ -34,6 +47,8 @@ void maj_s(int **i, char **av, int w_fonc){
         main_md5,
         main_sha256
     };
+    if (!av[0])
+        return;
     flg.s = 1;
     fonc[w_fonc](av[0], 1);
     (**i)++;
@@ -101,10 +116,8 @@ void check_opt(char **input){
     int i = 0;
     int j = 0;
 
-	// printf("buggggg 1\n");
     while (input[i]){
         if(input[i][0] == '-' && !check_flag(input[i])){
-			// printf("buggggg 2 %s\n", input[i]);
 			j = 667;
         	break;
 		}
@@ -160,10 +173,6 @@ void main_md5(char *src, int is_str) {
 
         return;
     }
-	// else if (!is_str && (stat(src, &status) != 0 || !S_ISREG(status.st_mode))){
-	// 	printf("Error: %s: can not be open\n", src);
-	// 	return;
-	// }
     md5((__uint8_t *)src, strlen(src), hash);
     print_all_md5(hash, src, 1);
 }
@@ -212,12 +221,10 @@ void handle_stdin_md5(void) {
     size_t total = 0;
     size_t n;
     __uint8_t hash[16];
-	// printf("lalalalande\n");m
 	
 	if (isatty(0))
         printf("ft_ssl: reading from stdin, press Ctrl+D to finish the input)\n");
     while ((n = read(0, buf, sizeof(buf))) > 0) {
-        // write(1, buf, n);
         __uint8_t *tmp = malloc(total + n);
         if (data) {
             memcpy(tmp, data, total);
@@ -227,14 +234,7 @@ void handle_stdin_md5(void) {
         data = tmp;
         total += n;
     }
-	// if (n == -1){
-	// 	printf("lalalalande\n");
-	// 	return;
-	// }
     md5(data, total, hash);
-
-    // if (!flg.q)
-    //     printf("\n");
 	if (flg.p)
     	print_all_md5(hash, (char *)data, 1);
 	else
@@ -272,10 +272,6 @@ void main_sha256(char *src, int is_str) {
 
         return;
     }
-	// else if (!is_str && (stat(src, &status) != 0 || !S_ISREG(status.st_mode))){
-	// 	printf("Error: %s: can not be open\n", src);
-	// 	return;
-	// }
     sha256((__uint8_t *)src, strlen(src), hash);
     print_all_sha256(hash, src, 1);
 }
@@ -324,12 +320,10 @@ void handle_stdin_sha256(void) {
     size_t total = 0;
     size_t n;
     __uint8_t hash[32];
-	// printf("lalalalande\n");m
 	
 	if (isatty(0))
         printf("ft_ssl: reading from stdin, press Ctrl+D to finish the input)\n");
     while ((n = read(0, buf, sizeof(buf))) > 0) {
-        // write(1, buf, n);
         __uint8_t *tmp = malloc(total + n);
         if (data) {
             memcpy(tmp, data, total);
@@ -339,14 +333,7 @@ void handle_stdin_sha256(void) {
         data = tmp;
         total += n;
     }
-	// if (n == -1){
-	// 	printf("lalalalande\n");
-	// 	return;
-	// }
     sha256(data, total, hash);
-
-    // if (!flg.q)
-    //     printf("\n");
 	if (flg.p)
     	print_all_sha256(hash, (char *)data, 1);
 	else
@@ -354,87 +341,121 @@ void handle_stdin_sha256(void) {
     free(data);
 }
 
-// void	*tab_free(char **tab){
-// 	int	i;
 
-// 	i = 0;
-// 	while (tab[i])
-// 	{
-// 		free(tab[i]);
-// 		i++;
-// 	}
-// 	free(tab);
-// 	return (NULL);
-// } 
+static size_t	nb_word(char const *str, char ch)
+{
+	size_t	j;
+	int		i;
 
-// void	ft_bzero(void *s, size_t n){
-// 	size_t	i;
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if ((str[i] != ch && str[i] != '\0')
+			&& (str[i + 1] == ch || str[i + 1] == '\0'))
+			j++;
+		i++;
+	}
+	return (j);
+}
 
-// 	i = 0;
-// 	while (i < n)
-// 	{
-// 		((char *)s)[i] = 0;
-// 		i++;
-// 	}
-// }
+static int	size_word(char const *str, char ch)
+{
+	int	i;
+	int	j;
 
-// void	*ft_calloc(size_t count, size_t size){
-// 	void	*mem;
+	i = 0;
+	j = 0;
+	while (str[i] == ch && str[i])
+		i++;
+	while (str[i] != ch && str[i])
+	{
+		j++;
+		i++;
+	}
+	return (j);
+}
 
-// 	if (count == 0 || size == 0)
-// 	{
-// 		mem = malloc(0);
-// 		return (mem);
-// 	}
-// 	mem = malloc(count * size);
-// 	if (!mem)
-// 		return (0);
-// 	ft_bzero(mem, count * size);
-// 	return (mem);
-// }
+static char	*copy(char *dest, const char *src, char ch)
+{
+	int	i;
 
-// int ft_strlen(char *str){
-//     int i = 0;
+	i = 0;
+	while (src[i] && src[i] != ch)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
 
-//     while (str[i]){
-//         i++;
-//     }
-//     return i;
-// }
+char	**tab(char const *s, char c, char **tab_str)
+{
+	size_t	j;
+	int		i;
 
-// char	*ft_strjoin(char *s1, char *s2){
-// 	char	*str;
-// 	int		i = 0;
-// 	int		j = 0;
+	i = -1;
+	j = 0;
+	while (s[++i] && j < nb_word(s, c))
+	{
+		while (s[i] == c)
+			i++;
+		tab_str[j] = malloc((size_word(&s[i], c) + 1) * sizeof(char));
+		if (!tab_str[j])
+		{
+			while (j-- >= 0)
+				free(tab_str[j]);
+			free(tab_str);
+			return (0);
+		}
+		copy(tab_str[j], &s[i], c);
+		if (s[i + size_word(&s[i], c)])
+			i += size_word(&s[i], c);
+		j++;
+	}
+	tab_str[j] = NULL;
+	return (tab_str);
+}
 
-// 	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-// 	if (!str)
-// 		return (0);
-// 	if (str)
-// 	{
-// 		while (s1[j]){
-// 			str[i++] = s1[j++];
-// 		}
-// 		j = 0;
-// 		while (s2[j]){
-// 			str[i++] = s2[j++];
-// 		}
-// 	}
-// 	str[i] = '\0';
-// 	return (str);
-// }
+char	**ft_split(char const *s, char c)
+{
+	char		**tab_str;
 
-// char	*ft_strdup(char *s1){
-// 	int		i = 0;
-// 	char	*dup;
+	tab_str = (char **)malloc((nb_word(s, c) + 1) * sizeof(char *));
+	if (!tab_str)
+	{
+		free(tab_str);
+		return (0);
+	}
+	return (tab(s, c, tab_str));
+}
 
-// 	dup = malloc(sizeof(char) * (ft_strlen(s1) + 1));
-// 	if (dup == 0)
-// 		return (0);
-// 	while (s1[i]){
-// 		dup[i] = s1[i];
-// 		i++;
-// 	}
-// 	dup[i] = '\0';
-// 	return (dup);
-// }
+int c_tab(char **tab){
+    int i = 0;
+    while (tab[i])
+        i++;
+    return (i);
+}
+
+char **take_in(void){
+    __uint8_t buf[4096];
+    __uint8_t *data = NULL;
+    size_t total = 0;
+    size_t n;
+    __uint8_t hash[16];
+	
+	if (isatty(0))
+        printf("ft_ssl: reading from stdin, press Ctrl+D to finish the input (teses)\n");
+    while ((n = read(0, buf, sizeof(buf))) > 0) {
+        __uint8_t *tmp = malloc(total + n);
+        if (data) {
+            memcpy(tmp, data, total);
+            free(data);
+        }
+        memcpy(tmp + total, buf, n);
+        data = tmp;
+        total += n;
+    }
+    return (ft_split(((char* const)data), ' '));
+}
