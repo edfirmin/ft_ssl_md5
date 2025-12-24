@@ -6,7 +6,7 @@
 /*   By: edfirmin <edfirmin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:46:59 by edfirmin          #+#    #+#             */
-/*   Updated: 2025/12/24 08:36:03 by edfirmin         ###   ########.fr       */
+/*   Updated: 2025/12/24 09:03:14 by edfirmin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void    maj_q(int **i, char **av, int w_fonc);
 void    maj_p(int **i, char **av, int w_fonc);
 void	*tab_free(char **tab);
 char    **take_in(void);
+int     c_tab(char **tab);
 
 void    md5(const __uint8_t *msg, int len, __uint8_t outp[16]);
 void 	main_md5(char *src, int is_str);
