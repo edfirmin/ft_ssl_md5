@@ -6,7 +6,7 @@
 /*   By: edfirmin <edfirmin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 12:26:54 by edfirmin          #+#    #+#             */
-/*   Updated: 2025/12/24 08:35:53 by edfirmin         ###   ########.fr       */
+/*   Updated: 2025/12/24 09:05:47 by edfirmin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -446,7 +446,7 @@ char **take_in(void){
     __uint8_t hash[16];
 	
 	if (isatty(0))
-        printf("ft_ssl: reading from stdin, press Ctrl+D to finish the input (teses)\n");
+        printf("ft_ssl: reading from stdin, press Ctrl+D to finish the input (with out quote)\n");
     while ((n = read(0, buf, sizeof(buf))) > 0) {
         __uint8_t *tmp = malloc(total + n);
         if (data) {
